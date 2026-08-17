@@ -1,0 +1,7 @@
+# Markdown docs are kept out of the repo except the top-level README
+*.md
+!README.md
+
+# OS/editor cruft
+.DS_Store
+Thumbs.db
