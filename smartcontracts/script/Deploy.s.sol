@@ -27,5 +27,6 @@ contract DeployScript is Script {
 
         console.log("MockCarbonCredit deployed at:", address(creditToken));
         console.log("PortfolioManager deployed at:", address(portfolioManager));
+
     }
 }
