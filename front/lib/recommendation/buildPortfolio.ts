@@ -1,12 +1,12 @@
 import type { PortfolioAllocation, RiskProfile, ScoredCredit } from "../scoring/types";
 
-const MIN_SCORE_BY_RISK: Record<RiskProfile, number> = {
+export const MIN_SCORE_BY_RISK: Record<RiskProfile, number> = {
   Conservative: 75,
   Balanced: 50,
   Aggressive: 0,
 };
 
-const MAX_SHARE_PER_PROJECT: Record<RiskProfile, number> = {
+export const MAX_SHARE_PER_PROJECT: Record<RiskProfile, number> = {
   Conservative: 0.5,
   Balanced: 0.6,
   Aggressive: 1,

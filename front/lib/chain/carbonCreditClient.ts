@@ -39,39 +39,63 @@ const mockCarbonCreditAbi = [
   },
 ] as const;
 
+/** The public X Layer testnet RPC is rate-limited and occasionally drops a request; retry before surfacing an error. */
+async function withRetry<T>(fn: () => Promise<T>, attempts = 3, delayMs = 400): Promise<T> {
+  let lastError: unknown;
+  for (let i = 0; i < attempts; i++) {
+    try {
+      return await fn();
+    } catch (err) {
+      lastError = err;
+      if (i < attempts - 1) {
+        await new Promise((resolve) => setTimeout(resolve, delayMs * (i + 1)));
+      }
+    }
+  }
+  throw lastError;
+}
+
 export function createCarbonCreditReader(rpcUrl: string, contractAddress: Address) {
   const publicClient = createPublicClient({ transport: http(rpcUrl) });
 
   async function listAvailableCredits(): Promise<CreditRecord[]> {
-    const nextTokenId = await publicClient.readContract({
-      address: contractAddress,
-      abi: mockCarbonCreditAbi,
-      functionName: "nextTokenId",
-    });
+    const nextTokenId = await withRetry(() =>
+      publicClient.readContract({
+        address: contractAddress,
+        abi: mockCarbonCreditAbi,
+        functionName: "nextTokenId",
+      }),
+    );
 
     const tokenIds = Array.from({ length: Number(nextTokenId) }, (_, i) => BigInt(i));
 
     const records = await Promise.all(
       tokenIds.map(async (tokenId): Promise<CreditRecord> => {
         const [metadata, priceWei, availableSupply] = await Promise.all([
-          publicClient.readContract({
-            address: contractAddress,
-            abi: mockCarbonCreditAbi,
-            functionName: "creditMetadata",
-            args: [tokenId],
-          }),
-          publicClient.readContract({
-            address: contractAddress,
-            abi: mockCarbonCreditAbi,
-            functionName: "priceWei",
-            args: [tokenId],
-          }),
-          publicClient.readContract({
-            address: contractAddress,
-            abi: mockCarbonCreditAbi,
-            functionName: "availableSupply",
-            args: [tokenId],
-          }),
+          withRetry(() =>
+            publicClient.readContract({
+              address: contractAddress,
+              abi: mockCarbonCreditAbi,
+              functionName: "creditMetadata",
+              args: [tokenId],
+            }),
+          ),
+          withRetry(() =>
+            publicClient.readContract({
+              address: contractAddress,
+              abi: mockCarbonCreditAbi,
+              functionName: "priceWei",
+              args: [tokenId],
+            }),
+          ),
+          withRetry(() =>
+            publicClient.readContract({
+              address: contractAddress,
+              abi: mockCarbonCreditAbi,
+              functionName: "availableSupply",
+              args: [tokenId],
+            }),
+          ),
         ]);
 
         const [projectType, certificationStandard, vintageYear, location, qualityScore] =

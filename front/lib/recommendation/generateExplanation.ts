@@ -41,7 +41,7 @@ export async function generateExplanation(
 
 ${JSON.stringify(allocationSummaries, null, 2)}
 
-Write a short (3-5 sentence) plain-language explanation for the user of why this combination of credits was chosen, referencing the quality scores and diversification. Do not use markdown headers or bullet points — plain prose only.`,
+Write a short (3-5 sentence) plain-language explanation for the user of why this combination of credits was chosen, referencing the quality scores and diversification. Write in a professional, polished tone. Do not use markdown headers or bullet points, and do not use em dashes or en dashes (—, –) — use commas, periods, or parentheses instead. Plain prose only.`,
       },
     ],
   });

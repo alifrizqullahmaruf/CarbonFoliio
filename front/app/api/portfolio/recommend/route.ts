@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { scoreAllCredits } from "@/lib/scoring/scoreAllCredits";
-import { selectPortfolio } from "@/lib/recommendation/buildPortfolio";
+import { selectPortfolio, MIN_SCORE_BY_RISK } from "@/lib/recommendation/buildPortfolio";
 import { generateExplanation } from "@/lib/recommendation/generateExplanation";
 import { getChainConfig } from "@/lib/config";
 import type { RiskProfile } from "@/lib/scoring/types";
@@ -32,15 +32,34 @@ export async function POST(request: Request) {
     const { rpcUrl, contractAddress } = getChainConfig();
     const scoredCredits = await scoreAllCredits(rpcUrl, contractAddress);
     const portfolio = selectPortfolio(scoredCredits, body.targetTons, body.riskProfile);
-    const explanation = await generateExplanation(
-      portfolio.allocations,
-      scoredCredits,
-      body.targetTons,
-      body.riskProfile,
-    );
+
+    const explanation =
+      portfolio.allocations.length === 0
+        ? `No credits meet the minimum AI Score of ${MIN_SCORE_BY_RISK[body.riskProfile]} required for a ${body.riskProfile} risk profile right now. Try a less conservative risk profile, or check back once more credits are listed.`
+        : await generateExplanation(
+            portfolio.allocations,
+            scoredCredits,
+            body.targetTons,
+            body.riskProfile,
+          );
+
+    const creditsByTokenId = new Map(scoredCredits.map((c) => [c.tokenId, c]));
 
     return NextResponse.json({
-      allocations: portfolio.allocations.map((a) => ({ ...a, costWei: a.costWei.toString() })),
+      allocations: portfolio.allocations.map((a) => {
+        const credit = creditsByTokenId.get(a.tokenId);
+        return {
+          ...a,
+          costWei: a.costWei.toString(),
+          projectType: credit?.projectType,
+          certificationStandard: credit?.certificationStandard,
+          ruleScore: credit?.ruleScore,
+          llmScore: credit?.llmScore,
+          llmRationale: credit?.llmRationale,
+          finalScore: credit?.finalScore,
+          confidence: credit?.confidence,
+        };
+      }),
       totalCostWei: portfolio.totalCostWei.toString(),
       totalTons: portfolio.totalTons,
       shortfall: portfolio.shortfall,
