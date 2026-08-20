@@ -1,6 +1,6 @@
 # Strata
 
-![Strata — AI-managed carbon credit portfolios, scored, diversified, and explained, built on X Layer](PASTE_HOSTED_IMAGE_URL_HERE)
+![Strata — AI-managed carbon credit portfolios, scored, diversified, and explained, built on X Layer](front/public/Strata_AI_Carbon_Portfolios_page-0001.jpg)
 
 **AI-managed carbon credit portfolios — scored, diversified, and explained, on X Layer.**
 
@@ -40,6 +40,10 @@ Review → Approve → one on-chain transaction (PortfolioManager.allocate)
      ↓
 Track holdings live from the chain
 ```
+
+## Screenshot
+
+![Strata landing page — Score first, build second, on-chain execution, all in one flow](front/public/Full%20app.png)
 
 ## Tech stack
 

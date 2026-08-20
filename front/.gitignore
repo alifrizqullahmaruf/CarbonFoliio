@@ -41,6 +41,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# hosted separately (e.g. pasted into GitHub's web editor for a CDN URL),
-# not committed to the repo
-public/Strata_AI_Carbon_Portfolios_page-0001.jpg
+# deck export pages not used in the README — page-0001 is committed
+# (used as the README hero banner), the rest stay local-only
+public/Strata_AI_Carbon_Portfolios_page-*.jpg
+!public/Strata_AI_Carbon_Portfolios_page-0001.jpg
