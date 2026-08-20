@@ -1,5 +1,7 @@
 # Strata
 
+![Strata — AI-managed carbon credit portfolios, scored, diversified, and explained, built on X Layer](PASTE_HOSTED_IMAGE_URL_HERE)
+
 **AI-managed carbon credit portfolios — scored, diversified, and explained, on X Layer.**
 
 Built for the [X Layer AI Season](https://www.okx.com/xlayer) hackathon (track: AI-RWA).

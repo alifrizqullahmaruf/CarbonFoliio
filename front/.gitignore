@@ -40,3 +40,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# hosted separately (e.g. pasted into GitHub's web editor for a CDN URL),
+# not committed to the repo
+public/Strata_AI_Carbon_Portfolios_page-0001.jpg
