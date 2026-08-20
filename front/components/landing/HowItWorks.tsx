@@ -21,7 +21,7 @@ export function HowItWorks() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
           {STEPS.map((step, i) => (
             <Reveal key={step.title} delay={i * 0.08}>
-              <Card padding="sm">
+              <Card padding="sm" className="h-full">
                 <span className="font-data text-xs text-leaf-dark block mb-3">
                   {String(i + 1).padStart(2, "0")}
                 </span>
