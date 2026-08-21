@@ -4,7 +4,6 @@ import "./globals.css";
 import { Providers } from "./providers";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
-import Logo from "@/public/LogoStrata.png"
 
 const bitter = Bitter({
   variable: "--font-display",
@@ -25,7 +24,7 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  icons: Logo.src,
+  icons: "/LogoStrataCircle.png",
   title: "Strata",
   description: "An instrument for reading the carbon market — AI-scored, on-chain carbon credit portfolios on X Layer.",
 };
