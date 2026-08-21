@@ -6,8 +6,8 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 export function Nav() {
   return (
-    <header className="bg-paper border-b border-line px-4 md:px-8 py-3">
-      <div className="max-w-6xl mx-auto flex items-center justify-between gap-4">
+    <header className="bg-paper border-b border-line px-6 md:px-10 py-3">
+      <div className="max-w-5xl mx-auto flex items-center justify-between gap-4">
         <Link href="/" className="flex items-center">
           <Image
             src="/LogoStrata.png"
@@ -18,22 +18,22 @@ export function Nav() {
             className="h-24 w-24 object-contain"
           />
         </Link>
-        <nav className="hidden sm:flex items-center gap-1 bg-leaf-pale rounded-full px-2 py-1.5">
+        <nav className="hidden sm:flex items-center gap-6">
           <Link
             href="/catalog"
-            className="px-4 py-1.5 rounded-full text-sm text-ink-soft hover:text-ink hover:bg-paper transition-colors"
+            className="text-sm text-ink-soft hover:text-ink transition-colors"
           >
             Catalog
           </Link>
           <Link
             href="/recommend"
-            className="px-4 py-1.5 rounded-full text-sm text-ink-soft hover:text-ink hover:bg-paper transition-colors"
+            className="text-sm text-ink-soft hover:text-ink transition-colors"
           >
             Recommend
           </Link>
           <Link
             href="/portfolio"
-            className="px-4 py-1.5 rounded-full text-sm text-ink-soft hover:text-ink hover:bg-paper transition-colors"
+            className="text-sm text-ink-soft hover:text-ink transition-colors"
           >
             Portfolio
           </Link>

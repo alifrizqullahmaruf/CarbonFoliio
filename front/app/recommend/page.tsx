@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
+import { useRouter } from "next/navigation";
 import { useAccount, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import type { Address } from "viem";
 import { portfolioManagerAbi } from "@/lib/chain/portfolioManagerAbi";
@@ -65,6 +66,7 @@ function RiskSelector({
 
 
 export default function RecommendPage() {
+  const router = useRouter();
   const { isConnected } = useAccount();
   const [targetTons, setTargetTons] = useState("10");
   const [riskProfile, setRiskProfile] = useState<RiskProfile>("Balanced");
@@ -80,6 +82,10 @@ export default function RecommendPage() {
   } = useWriteContract();
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
     useWaitForTransactionReceipt({ hash: txHash });
+
+  useEffect(() => {
+    if (isConfirmed) router.push("/portfolio");
+  }, [isConfirmed, router]);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -119,7 +125,7 @@ export default function RecommendPage() {
   }
 
   return (
-    <div className="px-6 md:px-10 py-12 md:py-16 max-w-6xl mx-auto w-full">
+    <div className="px-6 md:px-10 py-12 md:py-16 max-w-5xl mx-auto w-full">
       <PageHeading
         eyebrow="Instrument reading"
         title="Get a Recommendation"

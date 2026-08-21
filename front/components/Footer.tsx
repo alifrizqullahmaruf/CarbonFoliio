@@ -8,8 +8,8 @@ const LINKS = [
 
 export function Footer() {
   return (
-    <footer className="bg-paper border-t border-line px-4 md:px-8 py-10">
-      <div className="max-w-6xl mx-auto">
+    <footer className="bg-paper border-t border-line px-6 md:px-10 py-10">
+      <div className="max-w-5xl mx-auto">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 pb-8 border-b border-line">
           <div>
             <p className="font-display text-lg text-ink mb-1">Strata</p>

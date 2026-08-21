@@ -37,7 +37,7 @@ export default function CatalogPage() {
 
       {credits && (
         <Card padding="sm" className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
+          <table className="w-full text-center border-collapse">
             <thead>
               <tr className="font-data text-[11px] uppercase tracking-widest text-ink-soft border-b border-line">
                 <th className="py-3 pr-4 font-normal">Project</th>

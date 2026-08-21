@@ -1,6 +1,7 @@
 "use client";
 
 import { Fragment, useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
 import { useAccount, useReadContract } from "wagmi";
 import type { Address } from "viem";
 import { portfolioManagerAbi } from "@/lib/chain/portfolioManagerAbi";
@@ -11,7 +12,6 @@ import { Card } from "@/components/Card";
 import { LinkButton } from "@/components/Button";
 import { StatusMessage } from "@/components/StatusMessage";
 import { ScoreBar } from "@/components/ScoreBar";
-import { ConfidenceBadge } from "@/components/ConfidenceBadge";
 
 const PORTFOLIO_MANAGER_ADDRESS = process.env
   .NEXT_PUBLIC_PORTFOLIO_MANAGER_ADDRESS as Address;
@@ -20,6 +20,7 @@ export default function PortfolioPage() {
   const { address, isConnected } = useAccount();
   const { credits: catalog, error: catalogError } = useScoredCredits();
   const [expandedTokenIds, setExpandedTokenIds] = useState<Set<number>>(new Set());
+  const [showScoreInfo, setShowScoreInfo] = useState(false);
 
   function toggleExpanded(tokenId: number) {
     setExpandedTokenIds((prev) => {
@@ -48,7 +49,7 @@ export default function PortfolioPage() {
 
   if (!isConnected) {
     return (
-      <div className="px-6 md:px-10 py-12 md:py-16 max-w-3xl mx-auto w-full">
+      <div className="px-6 md:px-10 py-12 md:py-16 max-w-5xl mx-auto w-full">
         {heading}
         <Card className="flex flex-col items-center justify-center text-center gap-2 py-20 border-dashed">
           <p className="font-data text-xs uppercase tracking-widest text-ink-soft">
@@ -71,7 +72,7 @@ export default function PortfolioPage() {
 
   if (chainLoading) {
     return (
-      <div className="px-6 md:px-10 py-12 md:py-16 max-w-3xl mx-auto w-full">
+      <div className="px-6 md:px-10 py-12 md:py-16 max-w-5xl mx-auto w-full">
         {heading}
         <Card className="flex items-center justify-center py-20">
           <StatusMessage variant="loading">Reading the chain…</StatusMessage>
@@ -81,7 +82,7 @@ export default function PortfolioPage() {
   }
   if (error) {
     return (
-      <div className="px-6 md:px-10 py-12 md:py-16 max-w-3xl mx-auto w-full">
+      <div className="px-6 md:px-10 py-12 md:py-16 max-w-5xl mx-auto w-full">
         {heading}
         <StatusMessage variant="error">Error: {error.message}</StatusMessage>
       </div>
@@ -101,7 +102,7 @@ export default function PortfolioPage() {
   const distinctRegistries = new Set(heldCredits.map((c) => c!.certificationStandard)).size;
 
   return (
-    <div className="px-6 md:px-10 py-12 md:py-16 max-w-3xl mx-auto w-full">
+    <div className="px-6 md:px-10 py-12 md:py-16 max-w-5xl mx-auto w-full">
       {heading}
 
       {tokenIds.length === 0 ? (
@@ -161,12 +162,31 @@ export default function PortfolioPage() {
           </div>
 
           <Card padding="sm" className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
+            <table className="w-full text-center border-collapse">
               <thead>
                 <tr className="font-data text-[11px] uppercase tracking-widest text-ink-soft border-b border-line">
                   <th className="py-3 pr-4 font-normal">Project</th>
                   <th className="py-3 pr-4 font-normal">Certification</th>
-                  <th className="py-3 pr-4 font-normal">AI Score</th>
+                  <th className="py-3 pr-4 font-normal">
+                    <span className="relative inline-flex items-center gap-1.5">
+                      AI Score
+                      <button
+                        type="button"
+                        onClick={() => setShowScoreInfo((v) => !v)}
+                        aria-label="How the AI Score is calculated"
+                        aria-expanded={showScoreInfo}
+                        className="w-3.5 h-3.5 rounded-full border border-ink-soft text-ink-soft text-[9px] font-normal normal-case tracking-normal leading-none flex items-center justify-center hover:border-leaf-dark hover:text-leaf-dark transition-colors"
+                      >
+                        ?
+                      </button>
+                      {showScoreInfo && (
+                        <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-56 bg-ink text-paper text-[11px] font-normal normal-case tracking-normal leading-relaxed rounded-lg p-3 z-10 shadow-lg text-left">
+                          AI Score = 40% rule-based fundamentals + 60%
+                          AI-reasoned analysis, out of 100.
+                        </div>
+                      )}
+                    </span>
+                  </th>
                   <th className="py-3 pr-4 font-normal">Tons held</th>
                   <th className="py-3 pr-4 font-normal">
                     <span className="sr-only">Details</span>
@@ -179,19 +199,13 @@ export default function PortfolioPage() {
                   const isExpanded = expandedTokenIds.has(Number(tokenId));
                   return (
                     <Fragment key={tokenId.toString()}>
-                      <tr className="border-b border-line last:border-0 align-top">
+                      <tr className={`align-top ${isExpanded ? "" : "border-b border-line last:border-0"}`}>
                         <td className="py-3 pr-4">{credit?.projectType ?? `Token #${tokenId}`}</td>
                         <td className="py-3 pr-4">{credit?.certificationStandard ?? "—"}</td>
                         <td className="py-3 pr-4">
                           {credit ? (
-                            <div className="flex flex-col gap-1">
-                              <div className="flex items-center gap-3">
-                                <ScoreBar score={credit.finalScore} />
-                                <ConfidenceBadge confidence={credit.confidence} />
-                              </div>
-                              <span className="font-data text-[11px] text-ink-soft">
-                                Rule {credit.ruleScore} · AI {credit.llmScore}
-                              </span>
+                            <div className="flex justify-center">
+                              <ScoreBar score={credit.finalScore} hideTotal />
                             </div>
                           ) : (
                             <span className="font-data text-xs text-ink-soft">—</span>
@@ -204,11 +218,11 @@ export default function PortfolioPage() {
                               type="button"
                               onClick={() => toggleExpanded(Number(tokenId))}
                               aria-expanded={isExpanded}
-                              className="flex items-center gap-1 font-data text-[10px] uppercase tracking-widest text-leaf-dark bg-leaf-pale rounded-full px-2 py-0.5 hover:bg-leaf hover:text-paper transition-colors"
+                              className="flex items-center gap-1 font-data text-[10px] uppercase tracking-widest text-leaf-dark bg-leaf-pale rounded-full px-2 py-0.5 hover:bg-leaf hover:text-paper transition-colors duration-500 ease-out"
                             >
                               Why
                               <span
-                                className={`inline-block transition-transform ${isExpanded ? "rotate-180" : ""}`}
+                                className={`inline-block transition-transform duration-500 ease-out ${isExpanded ? "rotate-180" : ""}`}
                                 aria-hidden
                               >
                                 ▾
@@ -217,31 +231,41 @@ export default function PortfolioPage() {
                           )}
                         </td>
                       </tr>
-                      {isExpanded && credit?.llmRationale && (
-                        <tr className="border-b border-line last:border-0">
-                          <td colSpan={5} className="pb-4 pr-4">
-                            <div className="bg-leaf-pale rounded-xl p-4 flex flex-col gap-1.5">
-                              <span className="font-data text-[10px] uppercase tracking-widest text-leaf-dark">
-                                AI Rationale
-                              </span>
-                              <p className="font-body text-sm text-ink-soft leading-relaxed">
-                                {credit.llmRationale}
-                              </p>
-                            </div>
-                          </td>
-                        </tr>
-                      )}
+                      <AnimatePresence initial={false}>
+                        {isExpanded && credit?.llmRationale && (
+                          <motion.tr
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                          >
+                            <td colSpan={5} className="pb-4 pr-4 text-left">
+                              <motion.div
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: "auto", opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                                className="overflow-hidden"
+                              >
+                                <div className="bg-leaf-pale rounded-xl p-4 flex flex-col gap-1.5">
+                                  <span className="font-data text-[10px] uppercase tracking-widest text-leaf-dark">
+                                    AI Rationale
+                                  </span>
+                                  <p className="font-body text-sm text-ink-soft leading-relaxed">
+                                    {credit.llmRationale}
+                                  </p>
+                                </div>
+                              </motion.div>
+                            </td>
+                          </motion.tr>
+                        )}
+                      </AnimatePresence>
                     </Fragment>
                   );
                 })}
               </tbody>
             </table>
           </Card>
-          {catalog && (
-            <p className="font-data text-[11px] text-ink-soft -mt-2">
-              AI Score = 40% rule-based fundamentals + 60% AI-reasoned analysis, out of 100.
-            </p>
-          )}
         </div>
       )}
     </div>
