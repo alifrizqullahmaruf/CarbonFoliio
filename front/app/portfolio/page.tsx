@@ -168,6 +168,9 @@ export default function PortfolioPage() {
                   <th className="py-3 pr-4 font-normal">Certification</th>
                   <th className="py-3 pr-4 font-normal">AI Score</th>
                   <th className="py-3 pr-4 font-normal">Tons held</th>
+                  <th className="py-3 pr-4 font-normal">
+                    <span className="sr-only">Details</span>
+                  </th>
                 </tr>
               </thead>
               <tbody className="font-body">
@@ -186,33 +189,45 @@ export default function PortfolioPage() {
                                 <ScoreBar score={credit.finalScore} />
                                 <ConfidenceBadge confidence={credit.confidence} />
                               </div>
-                              <div className="flex items-center gap-2">
-                                <span className="font-data text-[11px] text-ink-soft">
-                                  Rule {credit.ruleScore} · AI {credit.llmScore}
-                                </span>
-                                {credit.llmRationale && (
-                                  <button
-                                    type="button"
-                                    onClick={() => toggleExpanded(Number(tokenId))}
-                                    className="font-data text-[11px] uppercase tracking-widest text-leaf-dark hover:text-leaf"
-                                  >
-                                    Why? {isExpanded ? "▴" : "▾"}
-                                  </button>
-                                )}
-                              </div>
+                              <span className="font-data text-[11px] text-ink-soft">
+                                Rule {credit.ruleScore} · AI {credit.llmScore}
+                              </span>
                             </div>
                           ) : (
                             <span className="font-data text-xs text-ink-soft">—</span>
                           )}
                         </td>
                         <td className="py-3 pr-4 font-data text-sm">{balances[i].toString()}</td>
+                        <td className="py-3 pr-4">
+                          {credit?.llmRationale && (
+                            <button
+                              type="button"
+                              onClick={() => toggleExpanded(Number(tokenId))}
+                              aria-expanded={isExpanded}
+                              className="flex items-center gap-1 font-data text-[10px] uppercase tracking-widest text-leaf-dark bg-leaf-pale rounded-full px-2 py-0.5 hover:bg-leaf hover:text-paper transition-colors"
+                            >
+                              Why
+                              <span
+                                className={`inline-block transition-transform ${isExpanded ? "rotate-180" : ""}`}
+                                aria-hidden
+                              >
+                                ▾
+                              </span>
+                            </button>
+                          )}
+                        </td>
                       </tr>
                       {isExpanded && credit?.llmRationale && (
                         <tr className="border-b border-line last:border-0">
-                          <td colSpan={4} className="pb-3 pr-4">
-                            <p className="font-body text-xs text-ink-soft italic leading-relaxed border-l-2 border-line pl-3">
-                              {credit.llmRationale}
-                            </p>
+                          <td colSpan={5} className="pb-4 pr-4">
+                            <div className="bg-leaf-pale rounded-xl p-4 flex flex-col gap-1.5">
+                              <span className="font-data text-[10px] uppercase tracking-widest text-leaf-dark">
+                                AI Rationale
+                              </span>
+                              <p className="font-body text-sm text-ink-soft leading-relaxed">
+                                {credit.llmRationale}
+                              </p>
+                            </div>
                           </td>
                         </tr>
                       )}

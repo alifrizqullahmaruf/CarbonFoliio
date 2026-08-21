@@ -217,7 +217,7 @@ export default function RecommendPage() {
                         </p>
                       )}
                       {a.llmRationale && (
-                        <p className="font-body text-xs text-ink-soft italic leading-relaxed border-l-2 border-line pl-3">
+                        <p className="font-body text-xs text-ink-soft leading-relaxed border-l-2 border-line pl-3">
                           {a.llmRationale}
                         </p>
                       )}
