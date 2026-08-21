@@ -10,7 +10,7 @@ export function Mission() {
           <span className="text-gradient-leaf">trust the score.</span>
         </h2>
         <p className="font-body text-lg text-paper/70 mb-10 leading-relaxed">
-          Strata exists to make that trust automatic — every credit, every
+          Strata exists to make that trust automatic: every credit, every
           allocation, explained.
         </p>
         <LinkButton href="/catalog">Browse the catalog →</LinkButton>

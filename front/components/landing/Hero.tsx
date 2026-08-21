@@ -16,20 +16,20 @@ export function Hero() {
             carbon credit portfolios.
           </h1>
           <p className="font-body text-lg md:text-xl text-ink-soft max-w-2xl mb-10 leading-relaxed">
-            Scored, diversified, and explained — built on X Layer.
+            Scored, diversified, and explained. Built on X Layer.
           </p>
           <LinkButton href="/catalog">Browse the catalog →</LinkButton>
         </Reveal>
 
-        <Reveal mode="mount" delay={0.15} className="relative min-h-70 md:min-h-140">
+        <Reveal mode="mount" delay={0.15} className="relative min-h-75 md:min-h-150">
           <Image
             src="/earth3.gif"
             alt="Earth"
-            width={1200}
-            height={1200}
+            width={2000}
+            height={2000}
             unoptimized
             priority
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-140 md:w-[150%] md:max-w-none h-auto"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-screen max-w-150 md:w-[165%] md:max-w-none h-auto"
           />
         </Reveal>
       </div>

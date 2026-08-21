@@ -4,7 +4,7 @@ import { Reveal } from "@/components/motion/Reveal";
 const PERSONAS = [
   {
     title: "Corporate Sustainability Officer",
-    body: "Offset your company's emissions with credits you can defend in an audit — every score comes with a reason.",
+    body: "Offset your company's emissions with credits you can defend in an audit: every score comes with a reason.",
   },
   {
     title: "Web3-Native Investor",
@@ -31,7 +31,7 @@ export function BuiltFor() {
           </h2>
           <p className="font-body text-lg md:text-xl text-ink-soft max-w-2xl leading-relaxed">
             Closing the books, building a treasury, or diversifying into
-            real-world assets — Strata gives every mandate the same
+            real-world assets: Strata gives every mandate the same
             explainable process.
           </p>
         </Reveal>

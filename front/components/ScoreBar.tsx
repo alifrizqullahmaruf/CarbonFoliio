@@ -1,6 +1,6 @@
 import { scoreBand, bandTextClass, bandRawColor } from "@/lib/scoreBand";
 
-export function ScoreBar({ score }: { score: number }) {
+export function ScoreBar({ score, hideTotal = false }: { score: number; hideTotal?: boolean }) {
   const band = scoreBand(score);
   return (
     <div
@@ -15,7 +15,7 @@ export function ScoreBar({ score }: { score: number }) {
       </div>
       <span className={`font-data text-xs ${bandTextClass(band)}`}>
         {score}
-        <span className="text-ink-soft">/100</span>
+        {!hideTotal && <span className="text-ink-soft">/100</span>}
       </span>
     </div>
   );

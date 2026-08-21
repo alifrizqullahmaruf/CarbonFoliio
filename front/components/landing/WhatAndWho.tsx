@@ -2,13 +2,13 @@ import { Reveal } from "@/components/motion/Reveal";
 
 const LAYERS = [
   {
-    label: "01 — Score",
+    label: "01 · Score",
     title: "Credit Quality",
-    body: "Every credit is scored on rule-based fundamentals and AI-reasoned context — vintage, certification, project type — so you're never guessing what you're buying.",
+    body: "Every credit is scored on rule-based fundamentals and AI-reasoned context, including vintage, certification, and project type, so you're never guessing what you're buying.",
     accent: "var(--leaf)",
   },
   {
-    label: "02 — Build",
+    label: "02 · Build",
     title: "Portfolio Construction",
     body: "Set a target and a risk profile. The engine assembles a diversified allocation across scored credits, with the reasoning shown at every layer.",
     accent: "var(--gold)",
