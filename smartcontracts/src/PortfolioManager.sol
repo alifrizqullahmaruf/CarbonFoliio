@@ -2,7 +2,7 @@
 pragma solidity ^0.8.24;
 
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
-import {MockCarbonCredit} from "./MockCarbonCredit.sol";
+import {CarbonCredit} from "./CarbonCredit.sol";
 
 contract PortfolioManager is Ownable {
     error ArrayLengthMismatch();
@@ -12,13 +12,13 @@ contract PortfolioManager is Ownable {
     event Allocated(address indexed user, uint256 indexed tokenId, uint256 amount, uint256 costWei);
     event Retired(address indexed user, uint256 indexed tokenId, uint256 amount);
 
-    MockCarbonCredit public immutable creditToken;
+    CarbonCredit public immutable creditToken;
 
     mapping(address => uint256[]) private _holdingsByUser;
     mapping(address => mapping(uint256 => bool)) private _isHeld;
 
     constructor(address creditToken_, address initialOwner) Ownable(initialOwner) {
-        creditToken = MockCarbonCredit(creditToken_);
+        creditToken = CarbonCredit(creditToken_);
     }
 
     function allocate(uint256[] calldata tokenIds, uint256[] calldata amounts) external payable {

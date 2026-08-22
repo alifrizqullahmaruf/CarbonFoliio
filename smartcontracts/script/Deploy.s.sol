@@ -2,7 +2,7 @@
 pragma solidity ^0.8.24;
 
 import {Script, console} from "forge-std/Script.sol";
-import {MockCarbonCredit} from "../src/MockCarbonCredit.sol";
+import {CarbonCredit} from "../src/CarbonCredit.sol";
 import {PortfolioManager} from "../src/PortfolioManager.sol";
 
 contract DeployScript is Script {
@@ -12,7 +12,7 @@ contract DeployScript is Script {
 
         vm.startBroadcast(deployerKey);
 
-        MockCarbonCredit creditToken = new MockCarbonCredit(deployer);
+        CarbonCredit creditToken = new CarbonCredit(deployer);
         PortfolioManager portfolioManager = new PortfolioManager(address(creditToken), deployer);
         creditToken.setMinter(address(portfolioManager));
 
@@ -25,7 +25,7 @@ contract DeployScript is Script {
 
         vm.stopBroadcast();
 
-        console.log("MockCarbonCredit deployed at:", address(creditToken));
+        console.log("CarbonCredit deployed at:", address(creditToken));
         console.log("PortfolioManager deployed at:", address(portfolioManager));
 
     }

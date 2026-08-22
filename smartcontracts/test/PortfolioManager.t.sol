@@ -2,14 +2,14 @@
 pragma solidity ^0.8.24;
 
 import {Test} from "forge-std/Test.sol";
-import {MockCarbonCredit} from "../src/MockCarbonCredit.sol";
+import {CarbonCredit} from "../src/CarbonCredit.sol";
 import {PortfolioManager} from "../src/PortfolioManager.sol";
 
 contract PortfolioManagerTest is Test {
     event Allocated(address indexed user, uint256 indexed tokenId, uint256 amount, uint256 costWei);
     event Retired(address indexed user, uint256 indexed tokenId, uint256 amount);
 
-    MockCarbonCredit credit;
+    CarbonCredit credit;
     PortfolioManager manager;
     address owner = address(0xA11CE);
     address user = address(0xCAFE);
@@ -18,7 +18,7 @@ contract PortfolioManagerTest is Test {
     uint256 renewableId;
 
     function setUp() public {
-        credit = new MockCarbonCredit(owner);
+        credit = new CarbonCredit(owner);
         manager = new PortfolioManager(address(credit), owner);
 
         vm.startPrank(owner);
@@ -106,7 +106,7 @@ contract PortfolioManagerTest is Test {
 
         vm.prank(user);
         vm.expectRevert(
-            abi.encodeWithSelector(MockCarbonCredit.InsufficientSupply.selector, reforestationId, 5000, 1000)
+            abi.encodeWithSelector(CarbonCredit.InsufficientSupply.selector, reforestationId, 5000, 1000)
         );
         manager.allocate{value: 5000 * 0.001 ether}(tokenIds, amounts);
     }

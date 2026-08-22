@@ -2,18 +2,18 @@
 pragma solidity ^0.8.24;
 
 import {Test} from "forge-std/Test.sol";
-import {MockCarbonCredit} from "../src/MockCarbonCredit.sol";
+import {CarbonCredit} from "../src/CarbonCredit.sol";
 
-contract MockCarbonCreditTest is Test {
+contract CarbonCreditTest is Test {
     event QualityScoreUpdated(uint256 indexed tokenId, uint8 oldScore, uint8 newScore);
     event MinterUpdated(address indexed oldMinter, address indexed newMinter);
 
-    MockCarbonCredit credit;
+    CarbonCredit credit;
     address owner = address(0xA11CE);
     address minter = address(0xB0B);
 
     function setUp() public {
-        credit = new MockCarbonCredit(owner);
+        credit = new CarbonCredit(owner);
     }
 
     function test_CreateCreditType_StoresMetadataPriceAndSupply() public {
@@ -31,7 +31,7 @@ contract MockCarbonCreditTest is Test {
 
     function test_CreateCreditType_RevertsIfQualityScoreOver100() public {
         vm.prank(owner);
-        vm.expectRevert(abi.encodeWithSelector(MockCarbonCredit.InvalidQualityScore.selector, 101));
+        vm.expectRevert(abi.encodeWithSelector(CarbonCredit.InvalidQualityScore.selector, 101));
         credit.createCreditType("Reforestation", "Verra VCS", 2023, "Kalimantan", 101, 0.001 ether, 1000);
     }
 
@@ -52,7 +52,7 @@ contract MockCarbonCreditTest is Test {
 
     function test_Restock_RevertsIfCreditDoesNotExist() public {
         vm.prank(owner);
-        vm.expectRevert(abi.encodeWithSelector(MockCarbonCredit.CreditDoesNotExist.selector, 99));
+        vm.expectRevert(abi.encodeWithSelector(CarbonCredit.CreditDoesNotExist.selector, 99));
         credit.restock(99, 100);
     }
 
@@ -72,7 +72,7 @@ contract MockCarbonCreditTest is Test {
     function test_UpdateQualityScore_RevertsIfOver100() public {
         vm.startPrank(owner);
         uint256 tokenId = credit.createCreditType("Reforestation", "Verra VCS", 2023, "Kalimantan", 80, 0.001 ether, 1000);
-        vm.expectRevert(abi.encodeWithSelector(MockCarbonCredit.InvalidQualityScore.selector, 150));
+        vm.expectRevert(abi.encodeWithSelector(CarbonCredit.InvalidQualityScore.selector, 150));
         credit.updateQualityScore(tokenId, 150);
         vm.stopPrank();
     }
@@ -90,7 +90,7 @@ contract MockCarbonCreditTest is Test {
         vm.prank(owner);
         uint256 tokenId = credit.createCreditType("Reforestation", "Verra VCS", 2023, "Kalimantan", 80, 0.001 ether, 1000);
 
-        vm.expectRevert(MockCarbonCredit.NotMinter.selector);
+        vm.expectRevert(CarbonCredit.NotMinter.selector);
         credit.mint(address(0xCAFE), tokenId, 1);
     }
 
@@ -101,7 +101,7 @@ contract MockCarbonCreditTest is Test {
         vm.stopPrank();
 
         vm.prank(minter);
-        vm.expectRevert(abi.encodeWithSelector(MockCarbonCredit.InsufficientSupply.selector, tokenId, 11, 10));
+        vm.expectRevert(abi.encodeWithSelector(CarbonCredit.InsufficientSupply.selector, tokenId, 11, 10));
         credit.mint(address(0xCAFE), tokenId, 11);
     }
 
