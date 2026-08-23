@@ -7,10 +7,8 @@ import {PortfolioManager} from "../src/PortfolioManager.sol";
 
 contract DeployScript is Script {
     function run() external {
-        uint256 deployerKey = vm.envUint("PRIVATE_KEY");
-        address deployer = vm.addr(deployerKey);
-
-        vm.startBroadcast(deployerKey);
+        vm.startBroadcast();
+        address deployer = msg.sender;
 
         CarbonCredit creditToken = new CarbonCredit(deployer);
         PortfolioManager portfolioManager = new PortfolioManager(address(creditToken), deployer);
