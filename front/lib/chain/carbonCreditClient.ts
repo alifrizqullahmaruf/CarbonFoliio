@@ -39,7 +39,7 @@ const mockCarbonCreditAbi = [
   },
 ] as const;
 
-/** The public X Layer testnet RPC is rate-limited and occasionally drops a request; retry before surfacing an error. */
+/** The public X Layer RPC is rate-limited and occasionally drops a request; retry before surfacing an error. */
 async function withRetry<T>(fn: () => Promise<T>, attempts = 3, delayMs = 400): Promise<T> {
   let lastError: unknown;
   for (let i = 0; i < attempts; i++) {

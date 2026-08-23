@@ -26,7 +26,7 @@ const FAQS_RIGHT = [
   },
   {
     q: "Is this running on real money right now?",
-    a: "Not yet. Strata's contracts are live on X Layer Testnet, using the network's test token (OKB), so anyone can try the full flow risk-free before mainnet.",
+    a: "Yes. Strata's contracts are live on X Layer Mainnet — allocations use real OKB. Review the credits and reasoning shown before approving any transaction.",
   },
   {
     q: "Where does the credit data come from?",

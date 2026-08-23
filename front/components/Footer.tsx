@@ -35,7 +35,7 @@ export function Footer() {
             © {new Date().getFullYear()} Strata. Built on X Layer.
           </p>
           <span className="font-data text-xs uppercase tracking-widest text-leaf-dark">
-            X Layer Testnet
+            X Layer
           </span>
         </div>
       </div>
