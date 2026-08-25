@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { Wallet } from "lucide-react";
 
 const ITEMS = [
   { href: "/catalog", label: "Catalog" },
@@ -30,7 +31,28 @@ export function BottomNav() {
             </Link>
           );
         })}
-        <ConnectButton showBalance={false} accountStatus="avatar" />
+        <ConnectButton.Custom>
+          {({ account, chain, openAccountModal, openConnectModal, mounted }) => {
+            const ready = mounted;
+            const connected = ready && account && chain;
+
+            return (
+              <button
+                type="button"
+                onClick={connected ? openAccountModal : openConnectModal}
+                aria-label={connected ? "Account" : "Connect wallet"}
+                className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-colors ${
+                  connected
+                    ? "bg-leaf-pale text-leaf-dark"
+                    : "bg-leaf text-white hover:bg-leaf-dark"
+                }`}
+                style={!ready ? { opacity: 0, pointerEvents: "none" } : undefined}
+              >
+                <Wallet className="h-4 w-4" />
+              </button>
+            );
+          }}
+        </ConnectButton.Custom>
       </div>
     </nav>
   );
