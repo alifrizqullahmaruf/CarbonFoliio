@@ -6,16 +6,16 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 export function Nav() {
   return (
-    <header className="bg-paper border-b border-line px-6 md:px-10 py-3">
-      <div className="max-w-5xl mx-auto flex items-center justify-between gap-4">
+    <header className="hidden sm:block fixed top-4 md:top-6 left-1/2 -translate-x-1/2 z-40 bg-paper border border-line rounded-full shadow-lg px-5 md:px-8 py-2">
+      <div className="flex items-center gap-4 md:gap-8">
         <Link href="/" className="flex items-center">
           <Image
-            src="/LogoStrata.png"
+            src="/LogoCircle.png"
             alt="Strata"
             width={2000}
             height={2000}
             priority
-            className="h-32 w-32 object-contain"
+            className="h-10 w-10 object-contain"
           />
         </Link>
         <nav className="hidden sm:flex items-center gap-6">

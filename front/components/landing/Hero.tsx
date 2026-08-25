@@ -4,7 +4,7 @@ import { Reveal } from "@/components/motion/Reveal";
 
 export function Hero() {
   return (
-    <section className="relative bg-mist px-6 md:px-10 py-16 md:py-24 overflow-hidden">
+    <section className="relative bg-mist px-6 md:px-10 sm:-mt-24 md:-mt-28 pt-16 sm:pt-40 md:pt-52 pb-16 md:pb-24 overflow-hidden">
       <div className="relative max-w-5xl mx-auto grid md:grid-cols-[1.15fr_1fr] gap-12 items-center">
         <Reveal mode="mount" className="relative z-10">
           <p className="font-data text-xs uppercase tracking-widest text-leaf-dark mb-4">
