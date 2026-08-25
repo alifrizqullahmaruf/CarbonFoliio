@@ -15,7 +15,7 @@ export function Nav() {
             width={2000}
             height={2000}
             priority
-            className="h-24 w-24 object-contain"
+            className="h-32 w-32 object-contain"
           />
         </Link>
         <nav className="hidden sm:flex items-center gap-6">

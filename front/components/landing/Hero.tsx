@@ -10,7 +10,7 @@ export function Hero() {
           <p className="font-data text-xs uppercase tracking-widest text-leaf-dark mb-4">
             AI-RWA · X Layer
           </p>
-          <h1 className="font-display text-4xl md:text-6xl leading-[1.05] text-ink mb-6">
+          <h1 className="font-display text-5xl md:text-7xl leading-[1.05] text-ink mb-6">
             <span className="text-gradient-leaf">AI-managed</span>
             <br />
             carbon credit portfolios.

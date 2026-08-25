@@ -4,6 +4,7 @@ import "./globals.css";
 import { Providers } from "./providers";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
+import { Preloader } from "@/components/Preloader";
 
 const bitter = Bitter({
   variable: "--font-display",
@@ -37,6 +38,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col bg-paper text-ink font-body">
         <Providers>
+          <Preloader />
           <Nav />
           {children}
           <Footer />
