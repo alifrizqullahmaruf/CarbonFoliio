@@ -4,6 +4,7 @@ import { useScoredCredits } from "@/hooks/useScoredCredits";
 import { PageHeading } from "@/components/PageHeading";
 import { Card } from "@/components/Card";
 import { StatusMessage } from "@/components/StatusMessage";
+import { TableSkeleton } from "@/components/Skeleton";
 import { Button, LinkButton } from "@/components/Button";
 import { formatOkb } from "@/lib/format";
 import { confidenceToBand, bandTextClass } from "@/lib/scoreBand";
@@ -33,7 +34,11 @@ export default function CatalogPage() {
       />
 
       {error && <StatusMessage variant="error">Error: {error}</StatusMessage>}
-      {!error && !credits && <StatusMessage variant="loading">Reading the chain…</StatusMessage>}
+      {!error && !credits && (
+        <Card padding="sm" className="overflow-x-auto">
+          <TableSkeleton rows={6} cols={5} />
+        </Card>
+      )}
 
       {credits && (
         <Card padding="sm" className="overflow-x-auto">

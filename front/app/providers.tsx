@@ -4,6 +4,7 @@ import { WagmiProvider } from "wagmi";
 import { RainbowKitProvider, lightTheme } from "@rainbow-me/rainbowkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MotionConfig } from "motion/react";
+import { Toaster } from "sonner";
 import "@rainbow-me/rainbowkit/styles.css";
 import { wagmiConfig } from "@/lib/chain/wagmiConfig";
 
@@ -20,7 +21,17 @@ export function Providers({ children }: { children: React.ReactNode }) {
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider theme={rainbowKitTheme}>
-          <MotionConfig reducedMotion="user">{children}</MotionConfig>
+          <MotionConfig reducedMotion="user">
+            {children}
+            <Toaster
+              position="top-center"
+              richColors
+              closeButton
+              toastOptions={{
+                style: { fontFamily: "var(--font-body)" },
+              }}
+            />
+          </MotionConfig>
         </RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>

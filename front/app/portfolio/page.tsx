@@ -12,6 +12,7 @@ import { Card } from "@/components/Card";
 import { LinkButton } from "@/components/Button";
 import { StatusMessage } from "@/components/StatusMessage";
 import { ScoreBar } from "@/components/ScoreBar";
+import { Skeleton, TableSkeleton } from "@/components/Skeleton";
 
 const PORTFOLIO_MANAGER_ADDRESS = process.env
   .NEXT_PUBLIC_PORTFOLIO_MANAGER_ADDRESS as Address;
@@ -74,9 +75,19 @@ export default function PortfolioPage() {
     return (
       <div className="px-6 md:px-10 py-12 md:py-16 max-w-5xl mx-auto w-full">
         {heading}
-        <Card className="flex items-center justify-center py-20">
-          <StatusMessage variant="loading">Reading the chain…</StatusMessage>
-        </Card>
+        <div className="flex flex-col gap-6">
+          <div className="grid sm:grid-cols-3 gap-4">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <Card key={i} className="flex flex-col gap-2">
+                <Skeleton className="h-3 w-20" />
+                <Skeleton className="h-8 w-24" />
+              </Card>
+            ))}
+          </div>
+          <Card padding="sm" className="overflow-x-auto">
+            <TableSkeleton rows={4} cols={5} />
+          </Card>
+        </div>
       </div>
     );
   }

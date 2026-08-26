@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useAccount, useWriteContract, useWaitForTransactionReceipt } from "wagmi";
-import type { Address } from "viem";
+import { BaseError, type Address } from "viem";
+import { toast } from "sonner";
 import { portfolioManagerAbi } from "@/lib/chain/portfolioManagerAbi";
 import type { RiskProfile } from "@/lib/scoring/types";
 import type { RecommendResponseDTO } from "@/lib/scoring/clientTypes";
@@ -15,6 +16,7 @@ import { Button } from "@/components/Button";
 import { StatusMessage } from "@/components/StatusMessage";
 import { ScoreBar } from "@/components/ScoreBar";
 import { ConfidenceBadge } from "@/components/ConfidenceBadge";
+import { Skeleton } from "@/components/Skeleton";
 
 const PORTFOLIO_MANAGER_ADDRESS = process.env
   .NEXT_PUBLIC_PORTFOLIO_MANAGER_ADDRESS as Address;
@@ -83,9 +85,36 @@ export default function RecommendPage() {
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
     useWaitForTransactionReceipt({ hash: txHash });
 
+  const txToastId = useRef<string | number | undefined>(undefined);
+
   useEffect(() => {
     if (isConfirmed) router.push("/portfolio");
   }, [isConfirmed, router]);
+
+  useEffect(() => {
+    if (isPending) {
+      txToastId.current = toast.loading("Confirm in your wallet…");
+    }
+  }, [isPending]);
+
+  useEffect(() => {
+    if (isConfirming) {
+      toast.loading("Processing transaction on-chain…", { id: txToastId.current });
+    }
+  }, [isConfirming]);
+
+  useEffect(() => {
+    if (isConfirmed) {
+      toast.success("Allocation confirmed", { id: txToastId.current });
+    }
+  }, [isConfirmed]);
+
+  useEffect(() => {
+    if (!writeError) return;
+    const message =
+      writeError instanceof BaseError ? writeError.shortMessage : writeError.message;
+    toast.error(message, { id: txToastId.current });
+  }, [writeError]);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -165,9 +194,23 @@ export default function RecommendPage() {
 
         <div>
           {loading && (
-            <Card className="flex items-center justify-center py-20">
-              <StatusMessage variant="loading">Reading the chain…</StatusMessage>
-            </Card>
+            <div className="flex flex-col gap-6">
+              <Card className="flex flex-col gap-2">
+                <Skeleton className="h-3 w-24" />
+                <Skeleton className="h-10 w-40" />
+              </Card>
+              <Card padding="sm" className="flex flex-col divide-y divide-line">
+                {Array.from({ length: 3 }).map((_, i) => (
+                  <div key={i} className="py-4 first:pt-0 last:pb-0 flex flex-col gap-2">
+                    <div className="flex items-center justify-between gap-4">
+                      <Skeleton className="h-4 w-32" />
+                      <Skeleton className="h-4 w-20" />
+                    </div>
+                    <Skeleton className="h-3 w-40" />
+                  </div>
+                ))}
+              </Card>
+            </div>
           )}
 
           {!loading && !result && (
